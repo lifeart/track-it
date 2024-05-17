@@ -1,4 +1,4 @@
-# Time Tracker Application
+# TrackIt Application
 
 This is a time-tracking application built with GXT, Tailwind CSS, and TypeScript. The application allows users to track time spent on specific tasks, view total time spent, and see detailed task timetables.
 

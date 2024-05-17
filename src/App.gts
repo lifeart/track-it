@@ -24,7 +24,7 @@ export default class App extends Component {
   <template>
     <section>
       <div class='container mx-auto p-4'>
-        <h1 class='text-2xl font-bold mb-4'>Time Tracker</h1>
+        <h1 class='text-2xl font-bold mb-4'>TrackIt</h1>
         <TaskList @tasks={{this.tasks}} @selectTask={{this.selectTask}} />
         <AddTask @addTask={{this.addTask}} />
         {{#if this.selectedTask}}
