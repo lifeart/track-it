@@ -1,5 +1,5 @@
 import { Component, tracked } from '@lifeart/gxt';
-import { DateTime } from 'luxon';
+import { formatISO } from 'date-fns';
 
 import parseDuration from 'parse-duration';
 import type { Task } from '../types/app';
@@ -14,17 +14,20 @@ export class AddDuration extends Component<{
 }> {
   @tracked durationInput = '';
 
+  // @ts-expect-error event type
   updateDuration = (event) => {
     this.durationInput = event.target.value;
   };
 
+  // @ts-expect-error event type
   addDuration = (event) => {
     event.preventDefault();
     const duration = parseDuration(this.durationInput);
+    // @ts-expect-error duration type
     if (isNaN(duration) || !duration) {
       return;
     }
-    const now = DateTime.now().toISO();
+    const now = formatISO(new Date());
     this.args.addDuration(this.args.task, { time: duration, date: now });
     this.durationInput = '';
   };

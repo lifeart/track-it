@@ -1,5 +1,5 @@
 import { Component, tracked } from '@lifeart/gxt';
-import { DateTime } from 'luxon';
+import { parseISO, startOfMonth, isAfter } from 'date-fns';
 import type { Task } from '../types/app';
 
 interface TaskItemArgs {
@@ -20,9 +20,10 @@ export class TaskItem extends Component<{
   }
 
   get monthlyTime() {
-    const startOfMonth = DateTime.now().startOf('month');
+        const startOfCurrentMonth = startOfMonth(new Date());
+
     return this.args.task.durations
-      .filter((duration) => DateTime.fromISO(duration.date) >= startOfMonth)
+      .filter(duration => isAfter(parseISO(duration.date), startOfCurrentMonth))
       .reduce((sum, duration) => sum + duration.time, 0);
   }
 
