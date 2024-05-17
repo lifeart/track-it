@@ -29,6 +29,12 @@ export class AddTask extends Component<{
     });
     this.label = '';
     this.description = '';
+    requestAnimationFrame(() => {
+      const input = document.getElementById('task-label') as HTMLInputElement;
+      if (input) {
+        input.focus();
+      }
+    });
   };
   <template>
     <form {{on 'submit' this.addTask}} class='mt-4'>
@@ -36,12 +42,15 @@ export class AddTask extends Component<{
         type='text'
         placeholder='Task Label'
         class='border p-1'
+        value={{this.label}}
+        id='task-label'
         {{on 'input' this.updateLabel}}
       />
       <input
         type='text'
         placeholder='Task Description'
         class='border p-1 ml-2'
+        value={{this.description}}
         {{on 'input' this.updateDescription}}
       />
       <button type='submit' class='ml-2 p-1 bg-green-500 text-white'>Add Task</button>

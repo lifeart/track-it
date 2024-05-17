@@ -29,15 +29,21 @@ export default class App extends Component {
     <section>
       <div class='container mx-auto p-4'>
         <h1 class='text-2xl font-bold mb-4'>TrackIt</h1>
-        <AddTask @addTask={{this.addTask}} />
 
-        <TaskList @tasks={{this.tasks}} @selectTask={{this.selectTask}} />
+        <details class='m-2 w-full'>
+          <summary class='cursor-pointer text-blue-500'>New task</summary>
+          <AddTask @addTask={{this.addTask}} />
+        </details>
+
         {{#if this.selectedTask}}
           <AddDuration
             @task={{this.selectedTask}}
             @addDuration={{this.addDuration}}
           />
         {{/if}}
+
+        <TaskList @tasks={{this.tasks}} @selectTask={{this.selectTask}} />
+       
       </div>
 
     </section>

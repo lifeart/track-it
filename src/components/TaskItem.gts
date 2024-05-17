@@ -46,22 +46,23 @@ export class TaskItem extends Component<{
   <template>
     <li class='p-2 border-b cursor-pointer' {{on 'click' this.selectTask}}>
       <div>
-        <h2 class='text-xl font-semibold'>{{@task.label}}</h2>
-        <p>{{@task.description}}</p>
-        <p>Total time spent: {{this.formatDuration this.totalTime}}</p>
-        <p>Time spent this month: {{this.formatDuration this.monthlyTime}}</p>
         <button
-          class='mt-2 p-1 bg-gray-300'
+          type='button'
+          class='text-xl font-semibold'
           {{on 'click' this.toggleDetails}}
-        >Details</button>
+        >{{@task.label}}</button>
+
         {{#if this.showDetails}}
+          <p>{{@task.description}}</p>
+          <p>Total time spent: {{this.formatDuration this.totalTime}}</p>
+          <p>Time spent this month: {{this.formatDuration this.monthlyTime}}</p>
           <div class='mt-2'>
             <h3 class='font-semibold'>Timetable:</h3>
             <ul>
               {{#each @task.durations as |duration|}}
                 <li>{{duration.date}}:
                   {{this.formatDuration duration.time}}
-                  </li>
+                </li>
               {{/each}}
             </ul>
           </div>
