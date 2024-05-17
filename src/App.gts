@@ -1,23 +1,40 @@
 import { Component, tracked } from '@lifeart/gxt';
-import { Input } from '@/components/Input';
-import { autofocus } from '@/modifiers/autofocus';
+
+import { AddDuration } from './components/AddDuration';
+import { AddTask } from './components/AddTask';
+import type { Task } from './types/app';
+import { TaskList } from './components/TaskList';
 
 export default class App extends Component {
-  @tracked
-  name = 'world';
-  updateName = (e: Event) => {
-    this.name = (e.target as HTMLInputElement).value;
+  @tracked tasks: Task[] = [];
+  @tracked selectedTask: Task | null = null;
+  selectTask = (task: Task) => {
+    this.selectedTask = task;
+  };
+  addTask = (task: Task) => {
+    this.tasks = [...this.tasks, task];
+  };
+  addDuration = (task: Task, duration: { time: number; date: string }) => {
+    const updatedTask = {
+      ...task,
+      durations: [...task.durations, duration],
+    };
+    this.tasks = this.tasks.map((t) => (t === task ? updatedTask : t));
   };
   <template>
     <section>
-      <h2 class='text-orange-300' style.margin-bottom='20px'>
-        Hello, {{this.name}}!</h2>
-      <p>
-        <Input 
-          @value={{this.name}}
-          @onInput={{this.updateName}}
-          {{autofocus}} />
-      </p>
+      <div class='container mx-auto p-4'>
+        <h1 class='text-2xl font-bold mb-4'>Time Tracker</h1>
+        <TaskList @tasks={{this.tasks}} @selectTask={{this.selectTask}} />
+        <AddTask @addTask={{this.addTask}} />
+        {{#if this.selectedTask}}
+          <AddDuration
+            @task={{this.selectedTask}}
+            @addDuration={{this.addDuration}}
+          />
+        {{/if}}
+      </div>
+
     </section>
   </template>
 }

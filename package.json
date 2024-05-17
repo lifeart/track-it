@@ -26,6 +26,9 @@
   },
   "dependencies": {
     "@lifeart/gxt": "^0.0.44",
-    "decorator-transforms": "^2.0.0"
+    "@types/luxon": "^3.4.2",
+    "decorator-transforms": "^2.0.0",
+    "luxon": "^3.4.4",
+    "parse-duration": "^1.1.0"
   }
 }
