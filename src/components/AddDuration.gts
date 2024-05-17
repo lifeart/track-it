@@ -8,7 +8,11 @@ import { autofocus } from '@/modifiers/autofocus';
 
 interface AddDurationArgs {
   task: Task;
-  addDuration: (task: Task, duration: { time: number; date: string, note: string }) => void;
+  addDuration: (
+    task: Task,
+    duration: { time: number; date: string; note: string },
+  ) => void;
+  onClose: () => void;
 }
 
 export class AddDuration extends Component<{
@@ -36,12 +40,52 @@ export class AddDuration extends Component<{
       return;
     }
     const now = formatISO(new Date());
-    this.args.addDuration(this.args.task, { time: duration, date: now, note: this.notes.trim() });
+    this.args.addDuration(this.args.task, {
+      time: duration,
+      date: now,
+      note: this.notes.trim(),
+    });
     this.durationInput = '';
     this.notes = '';
   };
+  @tracked open = true;
+  onCloseEvent = () => {
+    this.args.onClose();
+  };
+  bindCloseEvents = (_: HTMLDialogElement) => {
+    const initEvent = new Event('init');
+    const timestampDiff = 10;
+    const onEscape = (event: KeyboardEvent) => {
+      if (initEvent.timeStamp + timestampDiff > event.timeStamp) {
+        return;
+      }
+      if (event.key === 'Escape') {
+        this.onCloseEvent();
+      }
+    };
+    const onClickOutside = (event: MouseEvent) => {
+      if (initEvent.timeStamp + timestampDiff > event.timeStamp) {
+        return;
+      }
+      if (_.contains(event.target as Node)) {
+        return;
+      } else {
+        this.onCloseEvent();
+      }
+    };
+    document.addEventListener('keydown', onEscape);
+    document.addEventListener('click', onClickOutside);
+    return () => {
+      document.removeEventListener('keydown', onEscape);
+      document.removeEventListener('click', onClickOutside);
+    };
+  };
   <template>
-    <dialog open class='rounded p-5 bg-slate-800 shadow-xl shadow-slate-900'>
+    <dialog
+      open
+      {{this.bindCloseEvents}}
+      class='rounded p-5 bg-slate-800 shadow-xl shadow-slate-900'
+    >
       <h3 class='text-xl font-semibold text-slate-300'>+ {{@task.label}}</h3>
       <div class='mt-4'>
 

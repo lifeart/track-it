@@ -9,7 +9,7 @@ import { read, write } from './utils/persisted';
 export default class App extends Component {
   @tracked tasks: Task[] = read('tasks', []);
   @tracked selectedTask: Task | null = null;
-  selectTask = (task: Task) => {
+  selectTask = (task: Task | null) => {
     if (this.selectedTask === task) {
       this.selectedTask = null;
       return;
@@ -47,6 +47,7 @@ export default class App extends Component {
         <AddDuration
           @task={{this.selectedTask}}
           @addDuration={{this.addDuration}}
+          @onClose={{fn this.selectTask null}}
         />
 
       {{/if}}
