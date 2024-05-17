@@ -20,10 +20,12 @@ export class TaskItem extends Component<{
   }
 
   get monthlyTime() {
-        const startOfCurrentMonth = startOfMonth(new Date());
+    const startOfCurrentMonth = startOfMonth(new Date());
 
     return this.args.task.durations
-      .filter(duration => isAfter(parseISO(duration.date), startOfCurrentMonth))
+      .filter((duration) =>
+        isAfter(parseISO(duration.date), startOfCurrentMonth),
+      )
       .reduce((sum, duration) => sum + duration.time, 0);
   }
 
@@ -57,7 +59,9 @@ export class TaskItem extends Component<{
             <h3 class='font-semibold'>Timetable:</h3>
             <ul>
               {{#each @task.durations as |duration|}}
-                <li>{{duration.date}}: {{this.formatDuration duration.time}} ms</li>
+                <li>{{duration.date}}:
+                  {{this.formatDuration duration.time}}
+                  </li>
               {{/each}}
             </ul>
           </div>
