@@ -1,4 +1,4 @@
-import { Component, tracked } from '@lifeart/gxt';
+import { Component, cell, cellFor, tracked } from '@lifeart/gxt';
 
 import { AddDuration } from './components/AddDuration';
 import { AddTask } from './components/AddTask';
@@ -8,7 +8,10 @@ import { read, write } from './utils/persisted';
 import { TaskDetails } from './components/TaskDetails';
 
 export default class App extends Component {
-  @tracked tasks: Task[] = read('tasks', []);
+  @tracked tasks: Task[] = read('tasks', []).map((task) => {
+    cellFor(task, 'durations');
+    return task;
+  });
   @tracked selectedTask: Task | null = null;
   selectTask = (task: Task | null) => {
     if (this.selectedTask === task) {
@@ -25,6 +28,7 @@ export default class App extends Component {
     write('tasks', this.tasks);
   };
   addTask = (task: Task) => {
+    cellFor(task, 'durations');
     this.tasks = [...this.tasks, task];
     write('tasks', this.tasks);
   };
@@ -32,11 +36,11 @@ export default class App extends Component {
     task: Task,
     duration: { time: number; date: string; note: string },
   ) => {
-    const updatedTask = {
-      ...task,
-      durations: [...task.durations, duration],
-    };
-    this.tasks = this.tasks.map((t) => (t === task ? updatedTask : t));
+    task.durations = [...task.durations, duration];
+    this.selectedTask = null;
+    // Promise.resolve().then(() => {
+    //   this.selectedTask = null;
+    // });
     console.log(this.tasks);
     write('tasks', this.tasks);
   };
