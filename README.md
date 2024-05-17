@@ -1,8 +1,13 @@
-# GXT + TS + Vite
+# Time Tracker Application
 
-This template should help get you started developing with GXT and TypeScript in Vite.
+This is a time-tracking application built with GXT, Tailwind CSS, and TypeScript. The application allows users to track time spent on specific tasks, view total time spent, and see detailed task timetables.
 
-[Demo](https://lifeart.github.io/template-gxt/)
+## Features
+
+- 📝 **Add and manage tasks** with labels and descriptions.
+- ⏱️ **Log multiple time durations** for each task.
+- 📊 **View total time spent** and time spent this month on each task.
+- 🕒 **View detailed timetables** for each task.
 
 ## Recommended IDE Setup
 
