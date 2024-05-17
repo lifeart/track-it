@@ -77,12 +77,12 @@ export class TaskItem extends Component<{
       <div>
         <button
           type='button'
-          class='text-sm font-semibold text-white bg-blue-900 p-2 rounded-md'
+          class='text-lg font-semibold  flex items-center text-white bg-blue-900 p-2 rounded-md'
           {{on 'click' this.handleClick}}
         >{{@task.label}}
           {{#if this.monthlyTime}}
             <badge
-              class='ml-2 bg-blue-500 text-white rounded-full p-1'
+              class='ml-2 flex pl-2 pr-2 text-sm bg-blue-500 text-white rounded-full p-1'
             >{{this.formatDuration this.monthlyTime}}</badge>
           {{/if}}
         </button>
@@ -114,7 +114,7 @@ export class TaskItem extends Component<{
             </div>
             <button
               type='button'
-              class='mt-2 text-sm font-semibold text-white bg-red-900 p-2 rounded-md'
+              class='mt-2 text-lg font-semibold text-white bg-red-900 p-2 rounded-md'
               {{on 'click' this.onClickRemove}}
             >Remove Tag</button>
           </section>

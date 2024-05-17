@@ -37,9 +37,9 @@ export class AddTask extends Component<{
     });
   };
   <template>
-    <form {{on 'submit' this.addTask}} class='mt-4 flex flex-col'>
-      <Input required class="flex gap-2 mb-2" label='Task Label' placeholder='Task Label'  id='task-label' @value={{this.label}} @onInput={{this.updateLabel}} />
-      <Input class="flex gap-2 mb-2" label='Task Description' placeholder='Task Description' @value={{this.description}} @onInput={{this.updateDescription}} />
+    <form {{on 'submit' this.addTask}} class='mt-4 mr-4 flex flex-col'>
+      <Input required class="flex text-lg gap-2 mb-2" label='Task Label' placeholder='Task Label'  id='task-label' @value={{this.label}} @onInput={{this.updateLabel}} />
+      <Input class="flex text-lg gap-2 mb-2" label='Task Description' placeholder='Task Description' @value={{this.description}} @onInput={{this.updateDescription}} />
       <button type='submit' class='justify-center  uppercase flex p-2 bg-green-900 rounded-md text-white'>Add Task</button>
     </form>
   </template>
