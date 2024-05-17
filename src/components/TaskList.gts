@@ -6,6 +6,7 @@ export class TaskList extends Component<{
   Args: {
     tasks: Task[];
     selectTask: (task: Task) => void;
+    removeTask: (task: Task) => void;
   };
 }> {
   get sortedTasks() {
@@ -17,7 +18,11 @@ export class TaskList extends Component<{
     <div class="flex justify-between">
       
         {{#each @tasks as |task|}}
-          <TaskItem @task={{task}} @selectTask={{fn @selectTask task}} />
+          <TaskItem 
+            @task={{task}} 
+            @selectTask={{fn @selectTask task}} 
+            @removeTask={{fn @removeTask task}}
+          />
         {{/each}}
    
     </div>

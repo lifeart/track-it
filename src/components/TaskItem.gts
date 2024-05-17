@@ -5,6 +5,7 @@ import type { Task } from '../types/app';
 interface TaskItemArgs {
   task: Task;
   selectTask: () => void;
+  removeTask: () => void;
 }
 
 export class TaskItem extends Component<{
@@ -37,15 +38,17 @@ export class TaskItem extends Component<{
     this.args.selectTask();
   };
 
-  formatDuration(milliseconds: number): string {
+  formatDuration(raw: number): string {
+    const milliseconds = Math.abs(raw);
     const hours = Math.floor(milliseconds / 3600000);
     const minutes = Math.floor((milliseconds % 3600000) / 60000);
+    const prefix = raw < 0 ? '-' : '';
     if (hours === 0) {
-      return `${minutes}m`;
+      return `${prefix}${minutes}m`;
     } else if (minutes === 0) {
-      return `${hours}h`;
+      return `${prefix}${hours}h`;
     }
-    return `${hours}h ${minutes}m`;
+    return `${prefix}${hours}h ${minutes}m`;
   }
   formatDate: (date: string) => string = (date) => {
     const currentLocale = navigator.language;
@@ -54,6 +57,11 @@ export class TaskItem extends Component<{
     });
   };
 
+  onClickRemove = () => {
+    if (confirm('Are you sure you want to remove this task?')) {
+      this.args.removeTask();
+    }
+  };
   <template>
     <div class='cursor-pointer flex m-2 flex-auto gap-2'>
       <div>
@@ -70,30 +78,37 @@ export class TaskItem extends Component<{
           {{/if}}
         </button>
         {{#if this.showDetails}}
-          <p>{{@task.description}}</p>
-          <p>Total time spent: {{this.formatDuration this.totalTime}}</p>
-          <p>Time spent this month: {{this.formatDuration this.monthlyTime}}</p>
-          <div class='mt-2'>
-            <h3 class='font-semibold'>Timetable:</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Note</th>
-                </tr>
-              </thead>
-              <tbody>
-                {{#each @task.durations as |duration|}}
+          <section class='text-slate-100 p-2'>
+            <p>{{@task.description}}</p>
+            <p>Total time spent: {{this.formatDuration this.totalTime}}</p>
+            <p>Time spent this month:
+              {{this.formatDuration this.monthlyTime}}</p>
+            <div class='mt-2'>
+              <table class='table-auto border-collapse border border-slate-500'>
+                <thead>
                   <tr>
-                    <td>{{this.formatDate duration.date}}</td>
-                    <td>{{this.formatDuration duration.time}}</td>
-                    <td>{{duration.note}}</td>
+                    <th class='p-2'>Date</th>
+                    <th class='p-2'>Time</th>
+                    <th class='p-2'>Note</th>
                   </tr>
-                {{/each}}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {{#each @task.durations as |duration|}}
+                    <tr>
+                      <td class='p-2'>{{this.formatDate duration.date}}</td>
+                      <td class='p-2'>{{this.formatDuration duration.time}}</td>
+                      <td class='p-2'>{{duration.note}}</td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+            <button
+              type='button'
+              class='mt-2 text-sm font-semibold text-white bg-red-900 p-2 rounded-md'
+              {{on 'click' this.onClickRemove}}
+            >Remove Tag</button>
+          </section>
         {{/if}}
       </div>
     </div>

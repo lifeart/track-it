@@ -16,6 +16,10 @@ export default class App extends Component {
     }
     this.selectedTask = task;
   };
+  removeTask = (task: Task) => {
+    this.tasks = this.tasks.filter((t) => t !== task);
+    write('tasks', this.tasks);
+  };
   addTask = (task: Task) => {
     this.tasks = [...this.tasks, task];
     write('tasks', this.tasks);
@@ -47,7 +51,11 @@ export default class App extends Component {
 
       {{/if}}
 
-      <TaskList @tasks={{this.tasks}} @selectTask={{this.selectTask}} />
+      <TaskList 
+        @tasks={{this.tasks}} 
+        @selectTask={{this.selectTask}}
+        @removeTask={{this.removeTask}}
+       />
 
     </section>
   </template>
