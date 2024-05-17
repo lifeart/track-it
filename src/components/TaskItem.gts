@@ -62,14 +62,23 @@ export class TaskItem extends Component<{
       this.args.removeTask();
     }
   };
+  clickCount = 0;
+  handleClick = () => {
+    this.clickCount += 1;
+    if (this.clickCount === 1) {
+      this.selectTask();
+    } else if (this.clickCount === 2) {
+      this.toggleDetails();
+      this.clickCount = 0;
+    }
+  };
   <template>
     <div class='cursor-pointer flex m-2 flex-auto gap-2'>
       <div>
         <button
           type='button'
           class='text-sm font-semibold text-white bg-blue-900 p-2 rounded-md'
-          {{on 'dblclick' this.toggleDetails}}
-          {{on 'click' this.selectTask}}
+          {{on 'click' this.handleClick}}
         >{{@task.label}}
           {{#if this.monthlyTime}}
             <badge
