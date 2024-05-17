@@ -8,13 +8,18 @@ export class TaskList extends Component<{
     selectTask: (task: Task) => void;
   };
 }> {
+  get sortedTasks() {
+    return this.args.tasks.slice().sort((a, b) => {
+      return a.label.localeCompare(b.label);
+    });
+  }
   <template>
-    <div>
-      <ul>
+    <div class="flex justify-between">
+      
         {{#each @tasks as |task|}}
           <TaskItem @task={{task}} @selectTask={{fn @selectTask task}} />
         {{/each}}
-      </ul>
+   
     </div>
   </template>
 }
