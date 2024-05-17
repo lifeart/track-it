@@ -5,6 +5,7 @@ import { AddTask } from './components/AddTask';
 import type { Task } from './types/app';
 import { TaskList } from './components/TaskList';
 import { read, write } from './utils/persisted';
+import { TaskDetails } from './components/TaskDetails';
 
 export default class App extends Component {
   @tracked tasks: Task[] = read('tasks', []);
@@ -17,6 +18,9 @@ export default class App extends Component {
     this.selectedTask = task;
   };
   removeTask = (task: Task) => {
+    if (!confirm('Are you sure you want to remove this task?')) {
+      return;
+    }
     this.tasks = this.tasks.filter((t) => t !== task);
     write('tasks', this.tasks);
   };
@@ -24,7 +28,10 @@ export default class App extends Component {
     this.tasks = [...this.tasks, task];
     write('tasks', this.tasks);
   };
-  addDuration = (task: Task, duration: { time: number; date: string, note: string }) => {
+  addDuration = (
+    task: Task,
+    duration: { time: number; date: string; note: string },
+  ) => {
     const updatedTask = {
       ...task,
       durations: [...task.durations, duration],
@@ -48,15 +55,26 @@ export default class App extends Component {
           @task={{this.selectedTask}}
           @addDuration={{this.addDuration}}
           @onClose={{fn this.selectTask null}}
-        />
+        >
+
+        <details class='m-2 w-full'>
+          <summary class='cursor-pointer text-cyan-300'>{{this.selectedTask.label}}</summary>
+          <div class='p-2 '>
+            <TaskDetails
+              @task={{this.selectedTask}}
+              @onClickRemove={{fn this.removeTask this.selectedTask}}
+            />
+          </div>
+        </details>
+        </AddDuration>
 
       {{/if}}
 
-      <TaskList 
-        @tasks={{this.tasks}} 
+      <TaskList
+        @tasks={{this.tasks}}
         @selectTask={{this.selectTask}}
         @removeTask={{this.removeTask}}
-       />
+      />
 
     </section>
   </template>

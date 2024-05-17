@@ -17,6 +17,9 @@ interface AddDurationArgs {
 
 export class AddDuration extends Component<{
   Args: AddDurationArgs;
+  Blocks: {
+    default: [];
+  }
 }> {
   @tracked durationInput = '';
   @tracked notes = '';
@@ -86,7 +89,7 @@ export class AddDuration extends Component<{
       {{this.bindCloseEvents}}
       class='rounded p-5 bg-slate-800 shadow-xl shadow-slate-900'
     >
-      <h3 class='text-xl font-semibold text-slate-300'>+ {{@task.label}}</h3>
+      {{yield}}
       <div class='mt-4'>
 
         <form
@@ -113,7 +116,6 @@ export class AddDuration extends Component<{
             {{on 'input' this.updateNotes}}
           >{{this.notes}}</textarea>
         </form>
-
       </div>
     </dialog>
   </template>
