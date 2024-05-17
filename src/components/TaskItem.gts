@@ -45,8 +45,8 @@ export class TaskItem extends Component<{
       <div>
         <h2 class='text-xl font-semibold'>{{@task.label}}</h2>
         <p>{{@task.description}}</p>
-        <p>Total time spent: {{this.formatDuration this.totalTime}} ms</p>
-        <p>Time spent this month: {{this.formatDuration this.monthlyTime}} ms</p>
+        <p>Total time spent: {{this.formatDuration this.totalTime}}</p>
+        <p>Time spent this month: {{this.formatDuration this.monthlyTime}}</p>
         <button
           class='mt-2 p-1 bg-gray-300'
           {{on 'click' this.toggleDetails}}
