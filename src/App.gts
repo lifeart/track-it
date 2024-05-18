@@ -20,6 +20,9 @@ export default class App extends Component {
     }
     this.selectedTask = task;
   };
+  editTask = (task: Task) => {
+    console.log('edit', task);
+  };
   removeTask = (task: Task) => {
     if (!confirm('Are you sure you want to remove this task?')) {
       return;
@@ -70,6 +73,7 @@ export default class App extends Component {
             <TaskDetails
               @task={{this.selectedTask}}
               @onClickRemove={{fn this.removeTask this.selectedTask}}
+              @onClickEdit={{fn this.editTask this.selectedTask}}
             />
           </div>
         </details>
