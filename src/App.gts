@@ -87,5 +87,11 @@ export default class App extends Component {
       />
 
     </section>
+      <footer><p class='text-center text-xs text-gray-500'>
+        Check on
+        <a
+          href='https://github.com/lifeart/track-it/'
+          class='text-blue-500'
+        >GitHub</a></p></footer>
   </template>
 }
