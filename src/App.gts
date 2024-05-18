@@ -42,10 +42,9 @@ export default class App extends Component {
     task: Task,
     duration: { time: number; date: string; note: string },
   ) => {
-    this.selectedTask = null;
-    // order matter here, because if we set dirations first, it's updating opcodes will be executed before if destroy
-    // todo: FIX THIS
+
     task.durations = [...task.durations, duration];
+    this.selectedTask = null;
 
     console.log(this.tasks);
     write('tasks', this.tasks);

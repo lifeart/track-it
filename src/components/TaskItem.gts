@@ -13,7 +13,6 @@ export class TaskItem extends Component<{
   Args: TaskItemArgs;
 }> {
   selectTask = () => {
-    console.log('selectTask');
     this.args.selectTask();
   };
   <template>

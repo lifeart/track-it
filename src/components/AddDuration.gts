@@ -48,6 +48,7 @@ export class AddDuration extends Component<{
       date: now,
       note: this.notes.trim(),
     });
+    event.preventDefault();
     this.durationInput = '';
     this.notes = '';
   };
