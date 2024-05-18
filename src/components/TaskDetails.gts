@@ -6,6 +6,7 @@ export class TaskDetails extends Component<{
   Args: {
     task: Task;
     onClickRemove: () => void;
+    onClickEdit: () => void;
   };
 }> {
   <template>
@@ -39,6 +40,10 @@ export class TaskDetails extends Component<{
         class='mt-2 text-lg font-semibold text-white bg-red-900 p-2 rounded-md'
         {{on 'click' @onClickRemove}}
       >Remove Tag</button>
+      <button
+        type='button'
+        class='mt-2 text-lg font-semibold text-white bg-blue-900 p-2 rounded-md'
+        {{on 'click' (fn @onClickEdit)}}>Edit Tag</button>
     </section>
   </template>
 }

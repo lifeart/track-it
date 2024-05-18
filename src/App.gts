@@ -1,4 +1,4 @@
-import { Component, tracked } from '@lifeart/gxt';
+import { Component, cell, cellFor, tracked } from '@lifeart/gxt';
 
 import { AddDuration } from './components/AddDuration';
 import { AddTask } from './components/AddTask';
@@ -8,7 +8,10 @@ import { read, write } from './utils/persisted';
 import { TaskDetails } from './components/TaskDetails';
 
 export default class App extends Component {
-  @tracked tasks: Task[] = read('tasks', []);
+  @tracked tasks: Task[] = read('tasks', []).map((task) => {
+    cellFor(task, 'durations');
+    return task;
+  });
   @tracked selectedTask: Task | null = null;
   selectTask = (task: Task | null) => {
     if (this.selectedTask === task) {
@@ -17,14 +20,21 @@ export default class App extends Component {
     }
     this.selectedTask = task;
   };
+  editTask = (task: Task) => {
+    console.log('edit', task);
+  };
   removeTask = (task: Task) => {
     if (!confirm('Are you sure you want to remove this task?')) {
       return;
     }
     this.tasks = this.tasks.filter((t) => t !== task);
+    if (this.selectedTask === task) {
+      this.selectedTask = null;
+    }
     write('tasks', this.tasks);
   };
   addTask = (task: Task) => {
+    cellFor(task, 'durations');
     this.tasks = [...this.tasks, task];
     write('tasks', this.tasks);
   };
@@ -32,11 +42,10 @@ export default class App extends Component {
     task: Task,
     duration: { time: number; date: string; note: string },
   ) => {
-    const updatedTask = {
-      ...task,
-      durations: [...task.durations, duration],
-    };
-    this.tasks = this.tasks.map((t) => (t === task ? updatedTask : t));
+
+    task.durations = [...task.durations, duration];
+    this.selectedTask = null;
+
     console.log(this.tasks);
     write('tasks', this.tasks);
   };
@@ -63,6 +72,7 @@ export default class App extends Component {
             <TaskDetails
               @task={{this.selectedTask}}
               @onClickRemove={{fn this.removeTask this.selectedTask}}
+              @onClickEdit={{fn this.editTask this.selectedTask}}
             />
           </div>
         </details>
@@ -77,5 +87,11 @@ export default class App extends Component {
       />
 
     </section>
+      <footer><p class='text-center text-xs text-gray-500'>
+        Check on
+        <a
+          href='https://github.com/lifeart/track-it/'
+          class='text-blue-500'
+        >GitHub</a></p></footer>
   </template>
 }

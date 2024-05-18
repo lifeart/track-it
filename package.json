@@ -25,7 +25,7 @@
     "vite-plugin-babel": "^1.2.0"
   },
   "dependencies": {
-    "@lifeart/gxt": "^0.0.44",
+    "@lifeart/gxt": "0.0.46",
     "date-fns": "^3.6.0",
     "decorator-transforms": "^2.0.0",
     "parse-duration": "^1.1.0"
