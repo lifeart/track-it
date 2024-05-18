@@ -25,6 +25,9 @@ export default class App extends Component {
       return;
     }
     this.tasks = this.tasks.filter((t) => t !== task);
+    if (this.selectedTask === task) {
+      this.selectedTask = null;
+    }
     write('tasks', this.tasks);
   };
   addTask = (task: Task) => {
