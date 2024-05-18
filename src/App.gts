@@ -34,6 +34,11 @@ export default class App extends Component {
     write('tasks', this.tasks);
   };
   addTask = (task: Task) => {
+    const taksWithSameLebel = this.tasks.find((t) => t.label === task.label);
+    if (taksWithSameLebel) {
+      alert(`Task with label ${task.label} already exists`);
+      return;
+    }
     cellFor(task, 'durations');
     this.tasks = [...this.tasks, task];
     write('tasks', this.tasks);
