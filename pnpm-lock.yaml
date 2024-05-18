@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@lifeart/gxt':
-    specifier: ^0.0.44
-    version: 0.0.44
+    specifier: ^0.0.45
+    version: 0.0.45
   date-fns:
     specifier: ^3.6.0
     version: 3.6.0
@@ -1757,8 +1757,8 @@ packages:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
 
-  /@lifeart/gxt@0.0.44:
-    resolution: {integrity: sha512-XLTTiiv/adWYdnjCHuFcgSqlHL9DDkwfrYo6TeHpP41cwSSBggumowguH7T/r2aEmX2xVUyYV9avGMFEhdV2Dg==}
+  /@lifeart/gxt@0.0.45:
+    resolution: {integrity: sha512-kgbs/63imZTIUdbn6F1h0A9g0mCEgju+RZy3onCFKFuO4Zr5Q5L4nGlc5hiUoBGzCkLsVd7dKK9IOHx3UwvPzQ==}
     dependencies:
       '@babel/core': 7.24.5
       '@babel/preset-typescript': 7.24.1(@babel/core@7.24.5)
