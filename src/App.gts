@@ -41,6 +41,11 @@ export default class App extends Component {
   addTask = (task: Task) => {
     const taksWithSameLebel = this.tasks.find((t) => t.label === task.label);
     if (taksWithSameLebel) {
+      try {
+        Telegram.WebApp.HapticFeedback.notificationOccurred('error');
+      } catch (e) {
+        // FINE
+      }
       alert(`Task with label ${task.label} already exists`);
       return;
     }
@@ -62,6 +67,11 @@ export default class App extends Component {
 
     console.log(this.tasks);
     write('tasks', this.tasks);
+    try {
+      Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+    } catch (e) {
+      // FINE
+    }
   };
   <template>
     <section class='container mx-auto p-4'>
