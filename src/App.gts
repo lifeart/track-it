@@ -93,7 +93,7 @@ export default class App extends Component {
   };
   get inTelegram() {
     return (
-      typeof Telegram !== 'undefined' || Telegram.WebApp.platform === 'unknown'
+      typeof Telegram !== 'undefined' && Telegram.WebApp.platform !== 'unknown'
     );
   }
   get showHeader() {
