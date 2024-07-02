@@ -30,6 +30,11 @@ export default class App extends Component {
   };
   confirm(prompt: string) {
     if (this.inTelegram) {
+      try {
+        Telegram.WebApp.HapticFeedback.impactOccurred('light');
+      } catch (e) {
+        // FINE
+      }
       return new Promise((resolve) => {
         Telegram.WebApp.showConfirm(prompt, resolve);
       });
@@ -45,6 +50,11 @@ export default class App extends Component {
       this.selectedTask = null;
     }
     write('tasks', this.tasks);
+    try {
+      Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+    } catch (e) {
+      // FINE
+    }
   };
   addTask = (task: Task) => {
     const taksWithSameLebel = this.tasks.find((t) => t.label === task.label);
@@ -82,7 +92,9 @@ export default class App extends Component {
     }
   };
   get inTelegram() {
-    return typeof Telegram !== 'undefined' || Telegram.WebApp.platform === 'unknown';
+    return (
+      typeof Telegram !== 'undefined' || Telegram.WebApp.platform === 'unknown'
+    );
   }
   get showHeader() {
     return !this.inTelegram;
