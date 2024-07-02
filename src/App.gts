@@ -19,6 +19,11 @@ export default class App extends Component {
       return;
     }
     this.selectedTask = task;
+    try {
+      Telegram.WebApp.HapticFeedback.selectionChanged();
+    } catch (e) {
+      // FINE
+    }
   };
   editTask = (task: Task) => {
     console.log('edit', task);
@@ -42,12 +47,16 @@ export default class App extends Component {
     cellFor(task, 'durations');
     this.tasks = [...this.tasks, task];
     write('tasks', this.tasks);
+    try {
+      Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+    } catch (e) {
+      // FINE
+    }
   };
   addDuration = (
     task: Task,
     duration: { time: number; date: string; note: string },
   ) => {
-
     task.durations = [...task.durations, duration];
     this.selectedTask = null;
 
@@ -71,16 +80,18 @@ export default class App extends Component {
           @onClose={{fn this.selectTask null}}
         >
 
-        <details class='m-2 w-full'>
-          <summary class='cursor-pointer text-cyan-300'>{{this.selectedTask.label}}</summary>
-          <div class='p-2 '>
-            <TaskDetails
-              @task={{this.selectedTask}}
-              @onClickRemove={{fn this.removeTask this.selectedTask}}
-              @onClickEdit={{fn this.editTask this.selectedTask}}
-            />
-          </div>
-        </details>
+          <details class='m-2 w-full'>
+            <summary
+              class='cursor-pointer text-cyan-300'
+            >{{this.selectedTask.label}}</summary>
+            <div class='p-2'>
+              <TaskDetails
+                @task={{this.selectedTask}}
+                @onClickRemove={{fn this.removeTask this.selectedTask}}
+                @onClickEdit={{fn this.editTask this.selectedTask}}
+              />
+            </div>
+          </details>
         </AddDuration>
 
       {{/if}}
@@ -92,7 +103,7 @@ export default class App extends Component {
       />
 
     </section>
-      <footer><p class='text-center text-xs text-gray-500'>
+    <footer><p class='text-center text-xs text-gray-500'>
         Check on
         <a
           href='https://github.com/lifeart/track-it/'
