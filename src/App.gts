@@ -83,7 +83,7 @@ export default class App extends Component {
     return !this.inTelegram;
   }
   <template>
-    <section class='container mx-auto p-4'>
+    <section class='container mx-auto p-4 overflow-hidden'>
       {{#if this.showHeader}}
         <h1 class='text-lg text-cyan-500 font-bold mb-2'>Track It</h1>
       {{/if}}
