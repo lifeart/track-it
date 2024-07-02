@@ -84,6 +84,13 @@ export class AddDuration extends Component<{
       document.removeEventListener('click', onClickOutside);
     };
   };
+  onFocus() {
+    try {
+      Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    } catch (e) {
+      // FINE
+    }
+  }
   <template>
     <dialog
       open
@@ -115,6 +122,7 @@ export class AddDuration extends Component<{
             class='bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             placeholder='Notes'
             {{on 'input' this.updateNotes}}
+            {{on 'focus' this.onFocus}}
           >{{this.notes}}</textarea>
         </form>
       </div>
