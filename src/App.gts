@@ -28,8 +28,16 @@ export default class App extends Component {
   editTask = (task: Task) => {
     console.log('edit', task);
   };
-  removeTask = (task: Task) => {
-    if (!confirm('Are you sure you want to remove this task?')) {
+  confirm(prompt: string) {
+    if (this.inTelegram) {
+      return new Promise((resolve) => {
+        Telegram.WebApp.showConfirm(prompt, resolve);
+      });
+    }
+    return confirm(prompt);
+  }
+  removeTask = async (task: Task) => {
+    if (!(await this.confirm('Are you sure you want to remove this task?'))) {
       return;
     }
     this.tasks = this.tasks.filter((t) => t !== task);
@@ -74,7 +82,7 @@ export default class App extends Component {
     }
   };
   get inTelegram() {
-    return typeof Telegram !== 'undefined';
+    return typeof Telegram !== 'undefined' || Telegram.WebApp.platform === 'unknown';
   }
   get showHeader() {
     return !this.inTelegram;
