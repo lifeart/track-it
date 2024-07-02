@@ -22,6 +22,7 @@ try {
   const color = rgb2hex(window.getComputedStyle(document.body).backgroundColor);
   Telegram.WebApp.setHeaderColor(color);
   Telegram.WebApp.setBackgroundColor(color);
+  Telegram.WebApp.ready();
 } catch(e) {
   // fine;
 }

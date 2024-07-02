@@ -73,9 +73,20 @@ export default class App extends Component {
       // FINE
     }
   };
+  get inTelegram() {
+    return typeof Telegram !== 'undefined';
+  }
+  get showHeader() {
+    return !this.inTelegram;
+  }
+  get showFooter() {
+    return !this.inTelegram;
+  }
   <template>
     <section class='container mx-auto p-4'>
-      <h1 class='text-lg text-cyan-500 font-bold mb-2'>Track It</h1>
+      {{#if this.showHeader}}
+        <h1 class='text-lg text-cyan-500 font-bold mb-2'>Track It</h1>
+      {{/if}}
 
       <details class='m-2 w-full'>
         <summary class='cursor-pointer text-cyan-300'>New task</summary>
@@ -113,11 +124,13 @@ export default class App extends Component {
       />
 
     </section>
-    <footer><p class='text-center text-xs text-gray-500'>
-        Check on
-        <a
-          href='https://github.com/lifeart/track-it/'
-          class='text-blue-500'
-        >GitHub</a></p></footer>
+    {{#if this.showFooter}}
+      <footer><p class='text-center text-xs text-gray-500'>
+          Check on
+          <a
+            href='https://github.com/lifeart/track-it/'
+            class='text-blue-500'
+          >GitHub</a></p></footer>
+    {{/if}}
   </template>
 }
