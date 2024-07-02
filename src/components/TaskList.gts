@@ -15,7 +15,7 @@ export class TaskList extends Component<{
     });
   }
   <template>
-    <div class='flex justify-between'>
+    <div class='flex justify-between flex-wrap'>
       {{#each this.sortedTasks key="label" as |task|}}
         <TaskItem
           @task={{task}}
