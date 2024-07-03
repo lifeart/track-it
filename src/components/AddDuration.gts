@@ -3,6 +3,7 @@ import { formatISO } from 'date-fns';
 import type { Task } from '../types/app';
 import { Input } from './Input';
 import { autofocus } from '@/modifiers/autofocus';
+import { t } from '@/helpers/intl';
 
 interface AddDurationArgs {
   task: Task;
@@ -120,17 +121,17 @@ export class AddDuration extends Component<{
                 class='flex'
                 @value={{this.durationInput}}
                 @onInput={{this.updateDuration}}
-                placeholder='Enter time (e.g., 1h20m)'
+                placeholder={{t.placeholder_duration}}
                 required
               />
               <button
                 type='submit'
                 class='rounded-lg flex ml-2 p-2 items-center bg-blue-500 text-white'
-              >Add</button>
+              >{{t.add}}</button>
             </div>
             <textarea
               class='bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-              placeholder='Notes'
+              placeholder={{t.placeholder_notes}}
               {{on 'input' this.updateNotes}}
               {{on 'focus' this.onFocus}}
             >{{this.notes}}</textarea>

@@ -1,4 +1,4 @@
-import { Task } from '@/types/app';
+import type { Task } from '@/types/app';
 import { parseISO, startOfMonth, isAfter } from 'date-fns';
 
 export const formatDate = (date: string) => {

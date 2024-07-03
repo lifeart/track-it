@@ -15,6 +15,9 @@ import {
   saveTasksToAsyncStorage,
   getRemovedTaskIdsFromAsyncStorage,
 } from './utils/cloud';
+import { t } from './helpers/intl';
+
+const space = () => document.createTextNode('\u00A0');
 
 export default class App extends Component {
   @tracked tasks: Task[] = read('tasks', []).map((task: Task) => {
@@ -61,12 +64,25 @@ export default class App extends Component {
     }
     return confirm(prompt);
   }
+  alert(prompt: string) {
+    if (this.inTelegram) {
+      try {
+        Telegram.WebApp.HapticFeedback.impactOccurred('light');
+      } catch (e) {
+        // FINE
+      }
+      return new Promise((resolve) => {
+        Telegram.WebApp.showAlert(prompt, () => resolve(void 0));
+      });
+    }
+    return alert(prompt);
+  }
   onRemoveTask = (task: Task) => {
     this.removeTask(task);
   };
   removeTask = async (task: Task, skipCloudSync = false) => {
     if (!skipCloudSync) {
-      if (!(await this.confirm('Are you sure you want to remove this task?'))) {
+      if (!(await this.confirm(t.msg_confirm_task_removal))) {
         return;
       }
     }
@@ -87,7 +103,7 @@ export default class App extends Component {
       // FINE
     }
   };
-  addTask = (task: Task) => {
+  addTask = async (task: Task) => {
     const taksWithSameLebel = this.tasks.find((t) => t.label === task.label);
     if (taksWithSameLebel) {
       try {
@@ -95,10 +111,14 @@ export default class App extends Component {
       } catch (e) {
         // FINE
       }
-      alert(`Task with label ${task.label} already exists`);
+      this.alert(
+        t.msg_task_with_this_label_already_exists.replace(
+          '{label}',
+          task.label,
+        ),
+      );
       return;
     }
-    task.uuid = uuid();
     cellFor(task, 'durations');
     this.tasks = [...this.tasks, task];
     write('tasks', this.tasks);
@@ -132,7 +152,7 @@ export default class App extends Component {
       if (btn) {
         btn.focus();
       }
-    })
+    });
     addTaskDurationToAsyncStorage(task.uuid, duration).catch(() => {
       console.info(`Unable to add task duration to async storage`);
     });
@@ -278,14 +298,16 @@ export default class App extends Component {
     }
   }
   onAppLoad = (_e: unknown) => {
-    this.syncStorages().catch((e) => {
-      console.info(`Unable to sync storage data`, e);
-    }).then(() => {
-      setTimeout(() => {
-        // try to sync again
-        this.onAppLoad(null);
-      }, 30000);
-    })
+    this.syncStorages()
+      .catch((e) => {
+        console.info(`Unable to sync storage data`, e);
+      })
+      .then(() => {
+        setTimeout(() => {
+          // try to sync again
+          this.onAppLoad(null);
+        }, 30000);
+      });
   };
   @tracked taskDetailsToggled = false;
   onToggleTaskDetails = (e: Event) => {
@@ -295,11 +317,11 @@ export default class App extends Component {
   <template>
     <section class='container mx-auto p-4 overflow-hidden' {{this.onAppLoad}}>
       {{#if this.showHeader}}
-        <h1 class='text-lg text-cyan-500 font-bold mb-2'>Track It</h1>
+        <h1 class='text-lg text-cyan-500 font-bold mb-2'>{{t.app_name}}</h1>
       {{/if}}
 
       <details class='m-2 w-full'>
-        <summary class='cursor-pointer text-cyan-300'>New task</summary>
+        <summary class='cursor-pointer text-cyan-300'>{{t.new_task}}</summary>
         <AddTask @addTask={{this.addTask}} />
       </details>
 
@@ -312,7 +334,10 @@ export default class App extends Component {
           @showForm={{not this.taskDetailsToggled}}
         >
 
-          <details class='m-2 w-full min-w-64' {{on 'toggle' this.onToggleTaskDetails}}>
+          <details
+            class='m-2 w-full min-w-64'
+            {{on 'toggle' this.onToggleTaskDetails}}
+          >
             <summary
               class='cursor-pointer text-cyan-300'
             >{{this.selectedTask.label}}</summary>
@@ -337,11 +362,11 @@ export default class App extends Component {
     </section>
     {{#if this.showFooter}}
       <footer><p class='text-center text-xs text-gray-500'>
-          Check on
+          {{t.check_on}}{{space}}
           <a
             href='https://github.com/lifeart/track-it/'
             class='text-blue-500'
-          >GitHub</a></p></footer>
+          >{{t.git_hub}}</a></p></footer>
     {{/if}}
   </template>
 }

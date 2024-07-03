@@ -1,6 +1,7 @@
 import { Component } from '@lifeart/gxt';
 import type { Task } from '../types/app';
 import { formatDate, formatDuration, totalTime, monthlyTime } from '../helpers';
+import { t } from '@/helpers/intl';
 
 export class TaskDetails extends Component<{
   Args: {
@@ -17,16 +18,16 @@ export class TaskDetails extends Component<{
   <template>
     <section class='text-slate-100 p-2'>
       <p>{{@task.description}}</p>
-      <p>Total time spent: {{formatDuration (totalTime @task)}}</p>
-      <p>Time spent this month:
+      <p>{{t.total_time_spent}}: {{formatDuration (totalTime @task)}}</p>
+      <p>{{t.time_spent_this_month}}:
         {{formatDuration (monthlyTime @task)}}</p>
       <div class='mt-2 max-h-[50vh] overflow-x-scroll'>
         <table class='table-auto w-full border-collapse border border-sky-800'>
           <thead class='sticky top-0 bg-sky-950 border-b border-sky-800'>
             <tr>
-              <th class='p-2'>Date</th>
-              <th class='p-2'>Time</th>
-              <th class='p-2'>Note</th>
+              <th class='p-2'>{{t.date}}</th>
+              <th class='p-2'>{{t.time}}</th>
+              <th class='p-2'>{{t.note}}</th>
             </tr>
           </thead>
           <tbody>
@@ -45,12 +46,12 @@ export class TaskDetails extends Component<{
           type='button'
           class='flex-1 text-lg font-semibold text-white bg-red-900 p-2 rounded-md'
           {{on 'click' @onClickRemove}}
-        >Remove Tag</button>
+        >{{t.remove_task}}</button>
         <button
           type='button'
           class='flex-1 text-lg font-semibold text-white bg-blue-900 p-2 rounded-md'
           {{on 'click' (fn @onClickEdit)}}
-        >Edit Tag</button>
+        >{{t.edit_task}}</button>
       </div>
 
     </section>
