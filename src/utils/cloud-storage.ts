@@ -6,7 +6,7 @@ export async function getCloudStorageDataByKeys(
 ): Promise<Record<string, string>> {
   return new Promise((resolve, reject) => {
     try {
-      Telegram.WebApp.CloudStorage.getItems(keys, (err, result) => {
+      Telegram.WebApp.CloudStorage.getItems(keys.map((k) => toKey(k)), (err, result) => {
         if (err) {
           reject(err);
         } else {
