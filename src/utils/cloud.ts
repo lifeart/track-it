@@ -57,6 +57,10 @@ export async function loadTasksFromAsyncStorage() {
   const knownKeys = keys.filter((k) => {
     return uuids.find((u) => k.startsWith(`${u}_`));
   });
+  const unknownKeys = keys.filter((k) => {
+    return !uuids.find((u) => k.startsWith(`${u}_`));
+  });
+  await removeKeysFromCloudStorage(unknownKeys);
   const keysForTasks: Record<string, string[]> = {};
   knownKeys.forEach((key) => {
     const [uuid, _year, _month] = key.split('_') as [string, string, string];
