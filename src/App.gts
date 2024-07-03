@@ -29,14 +29,20 @@ export default class App extends Component {
     cellFor(task, 'durations');
     return task;
   });
-  @tracked selectedTask: Task | null = null;
-  @tracked taskToEdit: Task | null = null;
+  @tracked selectedTaskId: string | null = null;
+  @tracked taskToEditId: string | null = null;
+  get selectedTask() {
+    return this.tasks.find((t) => t.uuid === this.selectedTaskId) || null;
+  }
+  get taskToEdit() {
+    return this.tasks.find((t) => t.uuid === this.taskToEditId) || null;
+  }
   selectTask = (task: Task | null) => {
-    if (this.selectedTask === task) {
-      this.selectedTask = null;
+    if (task && this.selectedTask === task) {
+      this.selectedTaskId = null;
       return;
     }
-    this.selectedTask = task;
+    this.selectedTaskId = task?.uuid || null;
     this.taskDetailsToggled = false;
     try {
       Telegram.WebApp.HapticFeedback.selectionChanged();
@@ -45,7 +51,7 @@ export default class App extends Component {
     }
   };
   editTask = (task: Task) => {
-    this.taskToEdit = task;
+    this.taskToEditId = task.uuid;
   };
   confirm(prompt: string) {
     if (this.inTelegram) {
@@ -83,8 +89,8 @@ export default class App extends Component {
       }
     }
     this.tasks = this.tasks.filter((t) => t.uuid !== task.uuid);
-    if (this.selectedTask === task) {
-      this.selectedTask = null;
+    if (this.selectedTaskId === task.uuid) {
+      this.selectedTaskId = null;
     }
     write('tasks', this.tasks);
     if (skipCloudSync) {
@@ -117,8 +123,8 @@ export default class App extends Component {
     }
     cellFor(task, 'durations');
     this.tasks = [...this.tasks.filter((t) => t !== this.taskToEdit), task];
-    this.taskToEdit = null;
-    this.selectedTask = task;
+    this.taskToEditId = null;
+    this.selectedTaskId = task.uuid;
     write('tasks', this.tasks);
     saveTasksListToAsyncStorage(this.tasks).catch(() => {
       console.info(`Unable to add task ${task.uuid} to async storage`);
@@ -166,7 +172,7 @@ export default class App extends Component {
     skipCloudSync: boolean = false,
   ) => {
     task.durations = [...task.durations, duration];
-    this.selectedTask = null;
+    this.selectedTaskId = null;
 
     console.log(this.tasks);
     write('tasks', this.tasks);
@@ -209,7 +215,7 @@ export default class App extends Component {
     const selectedTaskUid = this.selectedTask?.uuid;
     tasksToRemoveLocally.forEach((t) => {
       if (t.uuid === selectedTaskUid) {
-        this.selectedTask = null;
+        this.selectedTaskId = null;
       }
       this.removeTask(t, true);
     });
