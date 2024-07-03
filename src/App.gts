@@ -164,7 +164,7 @@ export default class App extends Component {
       if (t.uuid === selectedTaskUid) {
         this.selectedTask = null;
       }
-      this.removeTask(t);
+      this.removeTask(t, true);
     });
     existingTasks = existingTasks.filter(
       (t) => !tasksToRemoveLocally.includes(t),
