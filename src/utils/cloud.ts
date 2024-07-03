@@ -46,10 +46,7 @@ export async function removeTaskFromAsyncStorage(uuid: string) {
 export async function loadTasksFromAsyncStorage() {
   let tasks = (await loadFromCloudStorage('tasks')) as BaseTask[] | null;
   const resolvedTasks: Task[] = [];
-  if (tasks === null) {
-    return resolvedTasks;
-  }
-  if (!Array.isArray(tasks)) {
+  if (tasks === null || !Array.isArray(tasks)) {
     return resolvedTasks;
   }
   const uuids = tasks.map((t) => t.uuid);
