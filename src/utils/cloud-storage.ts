@@ -1,4 +1,5 @@
 import { asKey, MAX_ALLOWED_CHARACTERS, toKey } from './utils';
+const RESERVED_KEYS = ['tasks', 'removed_tasks'];
 
 export async function getCloudStorageDataByKeys(
   keys: string[],
@@ -57,7 +58,7 @@ export async function getCloudStorageKeys(): Promise<string[]> {
           resolve(
             keys.map((k) => {
               return asKey(k);
-            }),
+            }).filter((k) => !RESERVED_KEYS.includes(k)),
           );
         }
       });
