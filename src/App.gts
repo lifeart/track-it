@@ -279,8 +279,8 @@ export default class App extends Component {
     }
   }
   onAppLoad = (_e: unknown) => {
-    this.syncStorages().catch(() => {
-      console.info(`Unable to sync storage data`);
+    this.syncStorages().catch((e) => {
+      console.info(`Unable to sync storage data`, e);
     });
   };
   <template>
