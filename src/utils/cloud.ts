@@ -112,8 +112,8 @@ export async function addTaskToAsyncStorage(task: Task) {
   if (!tasks) {
     return;
   }
-  const clearedTasks = tasks.push(toBaseTask(task));
-  await saveToCloudStorage('tasks', clearedTasks);
+  tasks.push(toBaseTask(task));
+  await saveToCloudStorage('tasks', tasks);
   await saveTaskDurationsToAsyncStorage(task);
 }
 export async function getRemovedTaskIdsFromAsyncStorage() {
