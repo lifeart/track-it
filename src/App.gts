@@ -348,6 +348,7 @@ export default class App extends Component {
       }
       return t;
     });
+    write('tasks', this.tasks);
   }
   onAppLoad = (_e: unknown) => {
     this.syncStorages()
