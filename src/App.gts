@@ -128,7 +128,6 @@ export default class App extends Component {
     } catch (e) {
       // FINE
     }
-
   };
   addTask = async (task: Task) => {
     const tasksWithSameLebel = this.tasks.find((t) => t.label === task.label);
@@ -323,6 +322,26 @@ export default class App extends Component {
         console.info(`unable to add missing task to cloud-storage: ${taskId}`);
       }
     }
+    this.fixLocalTaskNames(cloudValues);
+  }
+  fixLocalTaskNames(tasks: Task[]) {
+    const localTasks = this.tasks;
+    const tasksToFix = tasks.filter((cloudTask) => {
+      const localTask = localTasks.find((t) => t.uuid === cloudTask.uuid);
+      return (
+        localTask &&
+        (localTask.label !== cloudTask.label ||
+          localTask.description !== cloudTask.description)
+      );
+    });
+    this.tasks = this.tasks.map((t) => {
+      const cloudTask = tasksToFix.find((ct) => ct.uuid === t.uuid);
+      if (cloudTask) {
+        cloudTask.durations = t.durations;
+        return cloudTask;
+      }
+      return t;
+    });
   }
   onAppLoad = (_e: unknown) => {
     this.syncStorages()
@@ -375,8 +394,8 @@ export default class App extends Component {
                   @saveTask={{this.saveTask}}
                 />
               {{else}}
-              {{!-- NO TASK FOR EDIT --}}
-              {{!-- FIXME: IF TaskDetails rendered here, things breaking --}}
+                {{! NO TASK FOR EDIT }}
+                {{! FIXME: IF TaskDetails rendered here, things breaking }}
               {{/if}}
               <TaskDetails
                 @task={{this.selectedTask}}
