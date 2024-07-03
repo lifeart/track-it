@@ -69,6 +69,9 @@ export async function getCloudStorageKeys(): Promise<string[]> {
 }
 
 export async function removeKeysFromCloudStorage(rawKeys: string[]) {
+  if (!rawKeys.length) {
+    return;
+  }
   const keys = rawKeys.map((k) => {
     return toKey(k);
   });
