@@ -275,6 +275,22 @@ declare namespace Telegram {
   }) => void;
   type WebAppEventHandlerWithUpdate = (params: { isUpdated: boolean }) => void;
 
+  type ThemeParams = {
+    accent_text_color: "#8774e1",
+    bg_color: "#212121",
+    button_color:  "#8774e1",
+    button_text_color: "#ffffff",
+    destructive_text_color: "#ff595a",
+    header_bg_color: "#212121",
+    hint_color: "#aaaaaa",
+    link_color: "#8774e1",
+    secondary_bg_color: "#181818",
+    section_bg_color : "#212121",
+    section_header_text_color : "#8774e1",
+    subtitle_text_color: "#aaaaaa",
+    text_color : "#ffffff"
+  };
+
   const WebView: {
     initParams: InitParams;
     isIframe: boolean;

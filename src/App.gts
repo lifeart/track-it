@@ -153,10 +153,8 @@ export default class App extends Component {
     return !this.inTelegram;
   }
   async syncStorages() {
-    let [cloudValues, removedUids] = await Promise.all([
-      loadTasksFromAsyncStorage(),
-      getRemovedTaskIdsFromAsyncStorage(),
-    ]);
+    let cloudValues = await loadTasksFromAsyncStorage();
+    let removedUids = await getRemovedTaskIdsFromAsyncStorage();
     let existingTasks = this.tasks;
     const tasksToRemoveLocally = existingTasks.filter((t) => {
       return removedUids.includes(t.uuid);
