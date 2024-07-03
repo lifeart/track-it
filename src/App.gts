@@ -312,7 +312,7 @@ export default class App extends Component {
           @showForm={{not this.taskDetailsToggled}}
         >
 
-          <details class='m-2 w-full min-w-96' {{on 'toggle' this.onToggleTaskDetails}}>
+          <details class='m-2 w-full min-w-60' {{on 'toggle' this.onToggleTaskDetails}}>
             <summary
               class='cursor-pointer text-cyan-300'
             >{{this.selectedTask.label}}</summary>
