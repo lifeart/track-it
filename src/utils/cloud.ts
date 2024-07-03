@@ -120,10 +120,10 @@ export async function getRemovedTaskIdsFromAsyncStorage() {
   const result = (await loadFromCloudStorage('removed_tasks')) as
     | string[]
     | null;
-  if (result) {
-    return result;
-  } else {
+  if (!Array.isArray(result)) {
     return [];
+  } else {
+    return result;
   }
 }
 export async function addRemovedTaskIdToAsyncStorage(id: string) {
