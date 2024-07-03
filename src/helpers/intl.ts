@@ -27,6 +27,8 @@ const en = {
   remove_task: 'Remove Task',
   // Edit Task
   edit_task: 'Edit Task',
+  m: 'm',
+  h: 'h',
 };
 
 const ru = {
@@ -38,7 +40,7 @@ const ru = {
   check_on: 'Проверить на',
   git_hub: 'GitHub',
   placeholder_duration: 'Время (прим., 1ч20м)',
-  placeholder_notes: 'Заметки',
+  placeholder_notes: 'Заметка',
   add: 'Добавить',
   add_task: 'Добавить задачу',
   task_description: 'Описание задачи',
@@ -50,6 +52,8 @@ const ru = {
   note: 'Заметка',
   remove_task: 'Удалить задачу',
   edit_task: 'Редактировать задачу',
+  h: 'ч',
+  m: 'м',
 };
 
 const isRu =

@@ -1,5 +1,6 @@
 import type { Task } from '@/types/app';
 import { parseISO, startOfMonth, isAfter } from 'date-fns';
+import { t } from './intl';
 
 export const formatDate = (date: string) => {
   const currentLocale = navigator.language;
@@ -14,11 +15,11 @@ export const formatDuration = (raw: number) => {
   const minutes = Math.floor((milliseconds % 3600000) / 60000);
   const prefix = raw < 0 ? '-' : '';
   if (hours === 0) {
-    return `${prefix}${minutes}m`;
+    return `${prefix}${minutes}${t.m}`;
   } else if (minutes === 0) {
-    return `${prefix}${hours}h`;
+    return `${prefix}${hours}${t.h}`;
   }
-  return `${prefix}${hours}h ${minutes}m`;
+  return `${prefix}${hours}${t.h} ${minutes}${t.m}`;
 };
 
 export const totalTime = (task: Task) => {
