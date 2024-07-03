@@ -10,7 +10,11 @@ export async function getCloudStorageDataByKeys(
         if (err) {
           reject(err);
         } else {
-          resolve(result);
+          const newResult: Record<string, string> = {};
+          Object.keys(result).forEach((k) => {
+            newResult[asKey(k)] = result[k];
+          });
+          resolve(newResult);
         }
       });
     } catch (e) {
