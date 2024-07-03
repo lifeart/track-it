@@ -83,7 +83,7 @@ export async function loadTasksFromAsyncStorage() {
             task.durations.push(...durationData);
           }
         } catch (e) {
-          // EOL
+          removeKeysFromCloudStorage([key]);
         }
       }
     });
