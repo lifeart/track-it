@@ -29,6 +29,7 @@ const en = {
   edit_task: 'Edit Task',
   m: 'm',
   h: 'h',
+  save_task: 'Save Task',
 };
 
 const ru = {
@@ -43,6 +44,7 @@ const ru = {
   placeholder_notes: 'Заметка',
   add: 'Добавить',
   add_task: 'Добавить задачу',
+  save_task: 'Сохранить задачу',
   task_description: 'Описание задачи',
   task_label: 'Метка задачи',
   total_time_spent: 'Общее затраченное время',

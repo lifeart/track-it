@@ -2,6 +2,7 @@ import { Component, cellFor, tracked } from '@lifeart/gxt';
 
 import { AddDuration } from './components/AddDuration';
 import { AddTask } from './components/AddTask';
+import { EditTask } from './components/EditTask';
 import type { Task, TaskDuration } from './types/app';
 import { TaskList } from './components/TaskList';
 import { read, write } from './utils/persisted';
@@ -14,6 +15,7 @@ import {
   removeTaskFromAsyncStorage,
   saveTasksToAsyncStorage,
   getRemovedTaskIdsFromAsyncStorage,
+  saveTasksListToAsyncStorage,
 } from './utils/cloud';
 import { t } from './helpers/intl';
 
@@ -28,6 +30,7 @@ export default class App extends Component {
     return task;
   });
   @tracked selectedTask: Task | null = null;
+  @tracked taskToEdit: Task | null = null;
   selectTask = (task: Task | null) => {
     if (this.selectedTask === task) {
       this.selectedTask = null;
@@ -42,14 +45,7 @@ export default class App extends Component {
     }
   };
   editTask = (task: Task) => {
-    this.tasks = this.tasks.map((t) => {
-      if (t.uuid === task.uuid) {
-        return task;
-      } else {
-        return t;
-      }
-    });
-    console.log('edit', task);
+    this.taskToEdit = task;
   };
   confirm(prompt: string) {
     if (this.inTelegram) {
@@ -103,9 +99,40 @@ export default class App extends Component {
       // FINE
     }
   };
+  saveTask = async (task: Task) => {
+    const tasksWithSameLebel = this.tasks.find((t) => t.label === task.label);
+    if (tasksWithSameLebel && tasksWithSameLebel?.uuid !== task.uuid) {
+      try {
+        Telegram.WebApp.HapticFeedback.notificationOccurred('error');
+      } catch (e) {
+        // FINE
+      }
+      this.alert(
+        t.msg_task_with_this_label_already_exists.replace(
+          '{label}',
+          task.label,
+        ),
+      );
+      return;
+    }
+    cellFor(task, 'durations');
+    this.tasks = [...this.tasks.filter((t) => t !== this.taskToEdit), task];
+    this.taskToEdit = null;
+    this.selectedTask = task;
+    write('tasks', this.tasks);
+    saveTasksListToAsyncStorage(this.tasks).catch(() => {
+      console.info(`Unable to add task ${task.uuid} to async storage`);
+    });
+    try {
+      Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+    } catch (e) {
+      // FINE
+    }
+
+  };
   addTask = async (task: Task) => {
-    const taksWithSameLebel = this.tasks.find((t) => t.label === task.label);
-    if (taksWithSameLebel) {
+    const tasksWithSameLebel = this.tasks.find((t) => t.label === task.label);
+    if (tasksWithSameLebel) {
       try {
         Telegram.WebApp.HapticFeedback.notificationOccurred('error');
       } catch (e) {
@@ -342,6 +369,15 @@ export default class App extends Component {
               class='cursor-pointer text-cyan-300'
             >{{this.selectedTask.label}}</summary>
             <div class='p-2'>
+              {{#if this.taskToEdit}}
+                <EditTask
+                  @task={{this.taskToEdit}}
+                  @saveTask={{this.saveTask}}
+                />
+              {{else}}
+              {{!-- NO TASK FOR EDIT --}}
+              {{!-- FIXME: IF TaskDetails rendered here, things breaking --}}
+              {{/if}}
               <TaskDetails
                 @task={{this.selectedTask}}
                 @onClickRemove={{fn this.onRemoveTask this.selectedTask}}

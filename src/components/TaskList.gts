@@ -16,7 +16,7 @@ export class TaskList extends Component<{
   }
   <template>
     <div class='flex justify-between flex-wrap'>
-      {{#each this.sortedTasks key="uuid" as |task|}}
+      {{#each this.sortedTasks as |task|}}
         <TaskItem
           @task={{task}}
           @selectTask={{fn @selectTask task}}

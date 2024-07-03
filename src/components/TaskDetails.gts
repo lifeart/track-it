@@ -1,6 +1,6 @@
 import { Component } from '@lifeart/gxt';
 import type { Task } from '../types/app';
-import { formatDate, formatDuration, totalTime, monthlyTime } from '../helpers';
+import { formatDate, formatDuration, totalTime, monthlyTime } from '@/helpers';
 import { t } from '@/helpers/intl';
 
 export class TaskDetails extends Component<{
