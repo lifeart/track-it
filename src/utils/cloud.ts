@@ -20,11 +20,10 @@ export async function addTaskDurationToAsyncStorage(
   let bucket: TaskDuration[] = [];
   try {
     const rawBucket = await loadFromCloudStorage(durationsKey);
-    const results = JSON.parse(rawBucket as string);
-    if (Array.isArray(results)) {
-      bucket = results;
+    if (Array.isArray(rawBucket)) {
+      bucket = rawBucket;
     } else {
-      throw new Error('Unknown storage key or type');
+      console.info(`Invalid data for key ${durationsKey}`);
     }
   } catch (e) {
     // EOL
