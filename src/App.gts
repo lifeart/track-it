@@ -279,7 +279,12 @@ export default class App extends Component {
   onAppLoad = (_e: unknown) => {
     this.syncStorages().catch((e) => {
       console.info(`Unable to sync storage data`, e);
-    });
+    }).then(() => {
+      setTimeout(() => {
+        // try to sync again
+        this.onAppLoad(null);
+      }, 30000);
+    })
   };
   <template>
     <section class='container mx-auto p-4 overflow-hidden' {{this.onAppLoad}}>
