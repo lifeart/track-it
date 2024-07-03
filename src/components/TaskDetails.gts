@@ -9,15 +9,20 @@ export class TaskDetails extends Component<{
     onClickEdit: () => void;
   };
 }> {
+  sortDurations(durations: Task['durations']) {
+    return durations.sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+  }
   <template>
     <section class='text-slate-100 p-2'>
       <p>{{@task.description}}</p>
       <p>Total time spent: {{formatDuration (totalTime @task)}}</p>
       <p>Time spent this month:
         {{formatDuration (monthlyTime @task)}}</p>
-      <div class='mt-2'>
+      <div class='mt-2 max-h-[50vh] overflow-x-scroll'>
         <table class='table-auto w-full border-collapse border border-sky-800'>
-          <thead>
+          <thead class='sticky top-0 bg-sky-950 border-b border-sky-800'>
             <tr>
               <th class='p-2'>Date</th>
               <th class='p-2'>Time</th>
@@ -25,7 +30,7 @@ export class TaskDetails extends Component<{
             </tr>
           </thead>
           <tbody>
-            {{#each @task.durations as |duration|}}
+            {{#each (this.sortDurations @task.durations) as |duration|}}
               <tr>
                 <td class='p-2'>{{formatDate duration.date}}</td>
                 <td class='p-2'>{{formatDuration duration.time}}</td>
