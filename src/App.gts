@@ -31,6 +31,7 @@ export default class App extends Component {
       return;
     }
     this.selectedTask = task;
+    this.taskDetailsToggled = false;
     try {
       Telegram.WebApp.HapticFeedback.selectionChanged();
     } catch (e) {
@@ -286,6 +287,11 @@ export default class App extends Component {
       }, 30000);
     })
   };
+  @tracked taskDetailsToggled = false;
+  onToggleTaskDetails = (e: Event) => {
+    const details = e.target as HTMLDetailsElement;
+    this.taskDetailsToggled = details.open;
+  };
   <template>
     <section class='container mx-auto p-4 overflow-hidden' {{this.onAppLoad}}>
       {{#if this.showHeader}}
@@ -303,9 +309,10 @@ export default class App extends Component {
           @task={{this.selectedTask}}
           @addDuration={{this.onAddDuration}}
           @onClose={{fn this.selectTask null}}
+          @showForm={{not this.taskDetailsToggled}}
         >
 
-          <details class='m-2 w-full'>
+          <details class='m-2 w-full min-w-96' {{on 'toggle' this.onToggleTaskDetails}}>
             <summary
               class='cursor-pointer text-cyan-300'
             >{{this.selectedTask.label}}</summary>

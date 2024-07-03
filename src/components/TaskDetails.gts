@@ -16,7 +16,7 @@ export class TaskDetails extends Component<{
       <p>Time spent this month:
         {{formatDuration (monthlyTime @task)}}</p>
       <div class='mt-2'>
-        <table class='table-auto border-collapse border border-slate-500'>
+        <table class='table-auto w-full border-collapse border border-sky-800'>
           <thead>
             <tr>
               <th class='p-2'>Date</th>
@@ -35,15 +35,19 @@ export class TaskDetails extends Component<{
           </tbody>
         </table>
       </div>
-      <button
-        type='button'
-        class='mt-2 text-lg font-semibold text-white bg-red-900 p-2 rounded-md'
-        {{on 'click' @onClickRemove}}
-      >Remove Tag</button>
-      <button
-        type='button'
-        class='mt-2 text-lg font-semibold text-white bg-blue-900 p-2 rounded-md'
-        {{on 'click' (fn @onClickEdit)}}>Edit Tag</button>
+      <div class='flex mt-2 justify-between gap-2'>
+        <button
+          type='button'
+          class='flex-1 text-lg font-semibold text-white bg-red-900 p-2 rounded-md'
+          {{on 'click' @onClickRemove}}
+        >Remove Tag</button>
+        <button
+          type='button'
+          class='flex-1 text-lg font-semibold text-white bg-blue-900 p-2 rounded-md'
+          {{on 'click' (fn @onClickEdit)}}
+        >Edit Tag</button>
+      </div>
+
     </section>
   </template>
 }

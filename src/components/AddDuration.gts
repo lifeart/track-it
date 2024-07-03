@@ -10,6 +10,7 @@ interface AddDurationArgs {
     task: Task,
     duration: { time: number; date: string; note: string },
   ) => void;
+  showForm: boolean;
   onClose: () => void;
 }
 
@@ -17,7 +18,7 @@ export class AddDuration extends Component<{
   Args: AddDurationArgs;
   Blocks: {
     default: [];
-  }
+  };
 }> {
   @tracked durationInput = '';
   @tracked notes = '';
@@ -34,11 +35,12 @@ export class AddDuration extends Component<{
 
   // @ts-expect-error event type
   addDuration = async (event: Sub) => {
-    // event.preventDefault();
+    event.preventDefault();
     const { default: parseDuration } = await import('parse-duration');
     const duration = parseDuration(this.durationInput);
     // @ts-expect-error duration type
     if (isNaN(duration) || !duration) {
+      this.durationInput = '';
       return;
     }
     const now = formatISO(new Date());
@@ -47,7 +49,6 @@ export class AddDuration extends Component<{
       date: now,
       note: this.notes.trim(),
     });
-    event.preventDefault();
     this.durationInput = '';
     this.notes = '';
   };
@@ -90,41 +91,52 @@ export class AddDuration extends Component<{
       // FINE
     }
   }
+  bindDialogRef = (el: HTMLDialogElement) => {
+    requestAnimationFrame(() => {
+      el.show();
+    });
+    return () => {
+      el.close();
+    };
+  };
   <template>
     <dialog
-      open
       {{this.bindCloseEvents}}
-      class='rounded p-5 bg-slate-800 shadow-xl shadow-slate-900'
+      {{this.bindDialogRef}}
+      class='rounded-md p-5 bg-sky-950 fixed top-5 shadow-xl shadow-slate-900'
     >
       {{yield}}
-      <div class='mt-4'>
+      {{#if @showForm}}
+        <div class='mt-4'>
 
-        <form
-          class='flex flex-col'
-          {{on 'submit' this.addDuration}}
-          method='dialog'
-        >
-          <div class='flex flex-row'>
-            <Input
-              {{autofocus}}
-              class='flex'
-              @value={{this.durationInput}}
-              @onInput={{this.updateDuration}}
-              placeholder='Enter time (e.g., 1h20m)'
-            />
-            <button
-              type='submit'
-              class='rounded-lg flex ml-2 p-2 items-center bg-blue-500 text-white'
-            >Add</button>
-          </div>
-          <textarea
-            class='bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            placeholder='Notes'
-            {{on 'input' this.updateNotes}}
-            {{on 'focus' this.onFocus}}
-          >{{this.notes}}</textarea>
-        </form>
-      </div>
+          <form
+            class='flex flex-col'
+            {{on 'submit' this.addDuration}}
+            method='dialog'
+          >
+            <div class='flex flex-row'>
+              <Input
+                {{autofocus}}
+                class='flex'
+                @value={{this.durationInput}}
+                @onInput={{this.updateDuration}}
+                placeholder='Enter time (e.g., 1h20m)'
+                required
+              />
+              <button
+                type='submit'
+                class='rounded-lg flex ml-2 p-2 items-center bg-blue-500 text-white'
+              >Add</button>
+            </div>
+            <textarea
+              class='bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+              placeholder='Notes'
+              {{on 'input' this.updateNotes}}
+              {{on 'focus' this.onFocus}}
+            >{{this.notes}}</textarea>
+          </form>
+        </div>
+      {{/if}}
     </dialog>
   </template>
 }
