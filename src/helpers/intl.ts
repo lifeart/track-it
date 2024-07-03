@@ -37,7 +37,7 @@ const ru = {
   new_task: 'Новая задача',
   check_on: 'Проверить на',
   git_hub: 'GitHub',
-  placeholder_duration: 'Введите время (например, 1ч20м)',
+  placeholder_duration: 'Время (прим., 1ч20м)',
   placeholder_notes: 'Заметки',
   add: 'Добавить',
   add_task: 'Добавить задачу',
@@ -55,3 +55,31 @@ const ru = {
 const isRu =
   Intl.DateTimeFormat().resolvedOptions().timeZone === 'Europe/Moscow';
 export const t = isRu ? ru : en;
+
+export function fixDuration(str: string): string {
+  const replaceMap = {
+    секунда: 's',
+    секунды: 's',
+    секунду: 's',
+    секунд: 's',
+    минута: 'm',
+    минуты: 'm',
+    минуту: 'm',
+    часов: 'h',
+    минут: 'm',
+    часа: 'h',
+    часы: 'h',
+    час: 'h',
+    мин: 'm',
+    сек: 's',
+    ч: 'h',
+    м: 'm',
+    с: 's',
+  };
+
+  for (const [key, value] of Object.entries(replaceMap)) {
+    str = str.replace(new RegExp(key, 'g'), value);
+  }
+  console.log(str);
+  return str;
+}

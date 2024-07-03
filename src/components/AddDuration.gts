@@ -3,7 +3,7 @@ import { formatISO } from 'date-fns';
 import type { Task } from '../types/app';
 import { Input } from './Input';
 import { autofocus } from '@/modifiers/autofocus';
-import { t } from '@/helpers/intl';
+import { fixDuration, t } from '@/helpers/intl';
 
 interface AddDurationArgs {
   task: Task;
@@ -38,7 +38,7 @@ export class AddDuration extends Component<{
   addDuration = async (event: Sub) => {
     event.preventDefault();
     const { default: parseDuration } = await import('parse-duration');
-    const duration = parseDuration(this.durationInput);
+    const duration = parseDuration(fixDuration(this.durationInput));
     // @ts-expect-error duration type
     if (isNaN(duration) || !duration) {
       this.durationInput = '';
