@@ -17,7 +17,8 @@ export function read<T extends ReadTypes>(key: StorageKey, defaultValue: T): T {
   }
 }
 export function write(key: StorageKey, rawValue: string | object) {
-    const value = typeof rawValue === 'string' ? rawValue : JSON.stringify(rawValue);
+  const value =
+    typeof rawValue === 'string' ? rawValue : JSON.stringify(rawValue);
   const accessKey = `${storageKey}/${key}`;
   try {
     localStorage.setItem(accessKey, value);
@@ -26,11 +27,10 @@ export function write(key: StorageKey, rawValue: string | object) {
   }
 }
 export function remove(key: StorageKey) {
-  
   const accessKey = `${storageKey}/${key}`;
   try {
     localStorage.removeItem(accessKey);
-  } catch(e) {
+  } catch (e) {
     // OOPS
   }
   return;

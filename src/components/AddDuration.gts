@@ -1,7 +1,5 @@
 import { Component, tracked } from '@lifeart/gxt';
 import { formatISO } from 'date-fns';
-
-import parseDuration from 'parse-duration';
 import type { Task } from '../types/app';
 import { Input } from './Input';
 import { autofocus } from '@/modifiers/autofocus';
@@ -35,8 +33,9 @@ export class AddDuration extends Component<{
   };
 
   // @ts-expect-error event type
-  addDuration = (event) => {
+  addDuration = async (event: Sub) => {
     // event.preventDefault();
+    const { default: parseDuration } = await import('parse-duration');
     const duration = parseDuration(this.durationInput);
     // @ts-expect-error duration type
     if (isNaN(duration) || !duration) {

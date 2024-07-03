@@ -1,7 +1,6 @@
 import { Component } from '@lifeart/gxt';
 import type { Task } from '../types/app';
 import { formatDuration, monthlyTime } from '../helpers';
-import { TaskDetails } from './TaskDetails';
 
 interface TaskItemArgs {
   task: Task;
@@ -22,6 +21,7 @@ export class TaskItem extends Component<{
           type='button'
           class='text-lg font-semibold flex items-center text-white bg-blue-900 p-2 rounded-md'
           {{on 'click' this.selectTask}}
+          id="task-button-{{@task.uuid}}"
         >{{@task.label}}
           {{#if (monthlyTime @task)}}
             <badge
