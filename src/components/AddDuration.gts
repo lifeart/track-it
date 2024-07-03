@@ -103,7 +103,7 @@ export class AddDuration extends Component<{
     <dialog
       {{this.bindCloseEvents}}
       {{this.bindDialogRef}}
-      class='rounded-md p-5 bg-sky-950 fixed top-5 shadow-xl shadow-slate-900'
+      class='rounded-md p-5 bg-sky-950 fixed max-w-[96vw] top-5 shadow-xl shadow-slate-900'
     >
       {{yield}}
       {{#if @showForm}}
