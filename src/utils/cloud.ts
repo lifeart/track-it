@@ -70,20 +70,21 @@ export async function loadTasksFromAsyncStorage() {
     keysForTasks[uuid].push(key);
   });
   const rawData = await getCloudStorageDataByKeys(knownKeys);
+  const properTasks: Task[] = tasks.map((t) => {
+    return { ...t, durations: [] };
+  });
   Object.keys(keysForTasks).forEach((uuid) => {
-    const t = tasks.find((task) => task.uuid === uuid);
+    const t = properTasks.find((task) => task.uuid === uuid);
     if (!t) {
       return;
     }
     const relatedKeys = keysForTasks[uuid];
-    const task: Task = { ...t, durations: [] };
-    resolvedTasks.push(task);
     relatedKeys.forEach((key) => {
       if (key in rawData) {
         try {
-          const durationData = JSON.parse(rawData[key]);
+          const durationData = JSON.parse(rawData[key]) as TaskDuration[];
           if (Array.isArray(durationData)) {
-            task.durations.push(...durationData);
+            t.durations.push(...durationData);
           }
         } catch (e) {
           removeKeysFromCloudStorage([key]);
@@ -91,7 +92,7 @@ export async function loadTasksFromAsyncStorage() {
       }
     });
   });
-  return resolvedTasks;
+  return properTasks;
 }
 export async function saveTaskDurationsToAsyncStorage(task: Task) {
   const results = splitTaskDurationsByMonths(task.uuid, task.durations);
