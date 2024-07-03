@@ -45,10 +45,12 @@ export async function removeTaskFromAsyncStorage(uuid: string) {
   await removeKeysFromCloudStorage(removedTaskKeys);
 }
 export async function loadTasksFromAsyncStorage() {
-  const tasks = (await loadFromCloudStorage('tasks')) as BaseTask[] | null;
-  console.log('tasks', tasks);
+  let tasks = (await loadFromCloudStorage('tasks')) as BaseTask[] | null;
   const resolvedTasks: Task[] = [];
-  if (!tasks) {
+  if (tasks === null) {
+    return resolvedTasks;
+  }
+  if (!Array.isArray(tasks)) {
     return resolvedTasks;
   }
   const uuids = tasks.map((t) => t.uuid);
