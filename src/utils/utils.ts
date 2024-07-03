@@ -5,10 +5,10 @@ export const MAX_ALLOWED_CHARACTERS = 4096;
 
 
 export function toKey(key: string) {
-  return `${storageKey}/${key}`;
+  return `${storageKey}__${key}`;
 }
 export function asKey(key: string) {
-  return key.replace(`${storageKey}/`, '');
+  return key.replace(`${storageKey}__`, '');
 }
 export function toBaseTask(task: Task): BaseTask {
   return {
