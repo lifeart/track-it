@@ -401,18 +401,18 @@ export default class App extends Component {
                   @saveTask={{this.saveTask}}
                 />
               {{else}}
+                <TaskDetails
+                  @task={{this.selectedTask}}
+                  @onClickRemove={{fn this.onRemoveTask this.selectedTask}}
+                  @onClickEdit={{fn this.editTask this.selectedTask}}
+                />
                 {{! NO TASK FOR EDIT }}
                 {{! FIXME: IF TaskDetails rendered here, things breaking }}
               {{/if}}
-              <TaskDetails
-                @task={{this.selectedTask}}
-                @onClickRemove={{fn this.onRemoveTask this.selectedTask}}
-                @onClickEdit={{fn this.editTask this.selectedTask}}
-              />
+
             </div>
           </details>
         </AddDuration>
-
       {{/if}}
 
       <TaskList

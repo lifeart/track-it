@@ -72,6 +72,9 @@ export class AddDuration extends Component<{
       if (initEvent.timeStamp + timestampDiff > event.timeStamp) {
         return;
       }
+      if (!(event.target as Node).isConnected) {
+        return;
+      }
       if (_.contains(event.target as Node)) {
         return;
       } else {
